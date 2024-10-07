@@ -1,0 +1,2 @@
+--create database ItemManagement;
+--use ItemManagement;

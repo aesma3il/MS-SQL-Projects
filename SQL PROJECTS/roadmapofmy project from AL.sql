@@ -1,0 +1,104 @@
+use ContactsDB
+drop Table City
+CREATE TABLE City(
+CityID INT IDENTITY(1,1),
+CityName NVARCHAR(30) NOT NULL,
+CONSTRAINT PK_CITYID_CITY PRIMARY KEY(CityID)
+);
+
+CREATE TABLE CUSTOMER(
+CustomerID INT  IDENTITY(1,1) ,
+FirstName NVARCHAR(20) NOT NULL,
+LastName NVARCHAR(20) NOT NULL,
+Phone NVARCHAR(9) NOT NULL,
+Email NVARCHAR(30) NOT NULL,
+CityID INT NOT NULL,
+CONSTRAINT PK_CUSTOMERID PRIMARY KEY(CustomerID),
+CONSTRAINT FK_CITYID_CUSTOMER_CITY FOREIGN KEY(CityID) REFERENCES City(CityID) ON UPDATE CASCADE ON DELETE NO ACTION
+);
+
+CREATE TABLE Category (
+CategoryID INT IDENTITY(1,1),
+CategoryName NVARCHAR(50) NOT NULL,
+CONSTRAINT PK_CATEGORYID_CATEGORY PRIMARY KEY(CategoryID)
+
+);
+
+
+CREATE TABLE Prodcut(
+ProductID INT IDENTITY(1,1),
+CategoryID INT NOT NULL,
+ProductName NVarchar(50) NOT NULL,
+ProductDescripion NVARCHAR(200) NULL,
+UnitPrice DECIMAL(10,2) NOT NULL,
+Qty INT NOT NULL CHECK(Qty > 0),
+
+CONSTRAINT PK_PRODUCTID_PRODUCT PRIMARY KEY(ProductID),
+CONSTRAINT FK_CATEGORYID_PRODCUT_CATEGORY FOREIGN KEY(CategoryID) REFERENCES Category(CategoryID) ON UPDATE CASCADE ON DELETE  CASCADE
+
+);
+
+CREATE TABLE SaleTransaction(
+TransactionID INT IDENTITY(1,1),
+BillNumber AS (right('000000'+CONVERT([varchar](6),TransactionID),(6))) PERSISTED,
+CustomerID INT NOT NULL,
+Total DECIMAL(10,2) NULL, 
+[DateAndTime] DATE DEFAULT GETDATE(),
+CONSTRAINT PK_TRANSACTIONID_SALETRANSACTION PRIMARY KEY(TransactionID),
+CONSTRAINT FK_CustomerID_SaleTransaction_CUSTOMER FOREIGN KEY(CustomerID) REFERENCES Customer(CustomerID)
+);
+
+CREATE TABLE SaleTransactionItem(
+SaleTransactionItemID INT IDENTITY(1,1) ,
+SaleTransactionID INT NOT NULL,
+ProductID INT NOT NULL ,
+Qty INT NOT NULL,
+UnitPrice DECIMAL(10,2) NOT NULL,
+TotalAmount DECIMAL(10,2) NOT NULL,
+
+CONSTRAINT PK_SaleTransactionItemID_SaleTransactionItem PRIMARY KEY(SaleTransactionItemID),
+CONSTRAINT  FK_PRODUCTID_SaleTransactionItem_PRODUCT FOREIGN KEY(ProductID) REFERENCES Prodcut(ProductID),
+CONSTRAINT FK_SaleTransactionID_SaleTransactionItem_SaleTransaction FOREIGN KEY(SaleTransactionID) REFERENCES SaleTransaction(TransactionID)
+
+);
+
+CREATE TABLE Users(
+UserID INT IDENTITY(1,1),
+Username VARCHAR(50) NOT NULL UNIQUE,
+[Password] VARCHAR(50) NOT NULL,
+
+CONSTRAINT PK_USERID_USER PRIMARY KEY(UserID)
+);
+
+CREATE TABLE Payment(
+PaymentID INT  IDENTITY(1,1),
+SaleTransactionID INT NOT NULL,
+UserID INT NOT NULL,
+PaymentDate DATE DEFAULT GETDATE(),
+Amount DECIMAL(10,2) ,
+
+CONSTRAINT PK_PAYMENTID_PAYMENT PRIMARY KEY(PaymentID),
+CONSTRAINT FK_SALETRANSACTIONID_PAYMENT FOREIGN KEY(SaleTransactionID) REFERENCES SaleTransaction(TransactionID),
+CONSTRAINT FK_USERID_USER FOREIGN KEY(UserID) REFERENCES Users(UserID)
+
+);
+
+INSERT INTO CITY(CityName) values('Aden'),
+('Al Jawf'),
+('Taiz'),
+('Al Mahrah'),
+('Al Mahwit'),
+('Al Hudaydah'),
+('Al Bayda'),
+('Dhale'),
+('Dhamar'),
+('Hadramaut'),
+('Hajjah'),
+('Ibb'),
+('Lahij'),
+('Marib'),
+('Raymah'),
+('Sadah'),
+('Sanaa'),
+('Shabwah'),
+('Amran');

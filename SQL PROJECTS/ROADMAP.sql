@@ -1,0 +1,11 @@
+--As for a road map, here's a possible path to follow:
+
+--Learn the basics of SQL, including SELECT, FROM, WHERE, and ORDER BY.
+--Learn how to filter data using operators such as LIKE, IN, and BETWEEN.
+--Learn how to join tables using INNER JOIN, LEFT JOIN, and other join types.
+--Learn how to aggregate data using functions such as COUNT, SUM, AVG, and MAX.
+--Learn how to group data using the GROUP BY clause.
+--Learn how to manipulate data using INSERT, UPDATE, DELETE, and other DML commands.
+--Learn how to create and modify tables using DDL commands such as CREATE TABLE and ALTER TABLE.
+--Learn how to manage user permissions and access using DCL commands such as GRANT and REVOKE.
+--Learn how to manage transactions using TCL commands such as COMMIT and ROLLBACK.
